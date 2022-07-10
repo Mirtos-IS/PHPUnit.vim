@@ -24,7 +24,7 @@ let g:phpunit_test_root = 'tests'
 ```
 
 ```vim
-" the directory that contains source files. if your tests directory is inside your src, use '.
+" the directory that contains source files.
 let g:phpunit_src_root = 'src'
 ```
 
