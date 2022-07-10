@@ -7,12 +7,12 @@ This is a fork os c9s/phpunit.vim.
 ## Install via Vundle
 
 ```vim
-Plugin "Mirtos-IS/phpunit.vim"
+Plugin "Mirtos-IS/PHPUnit.vim"
 ```
 
 ## Install via Vim-Plug
 ```vim
-Plug "Mirtos-IS/phpunit.vim"
+Plug "Mirtos-IS/PHPUnit.vim"
 ```vim
 
 ## Configurations
