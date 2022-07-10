@@ -1,4 +1,5 @@
 # phpunit.vim
+This is a fork os c9s/phpunit.vim. 
 
 ![phpunit.vim](https://pbs.twimg.com/media/CPwwG-4UcAA-KXs.png:large)
 
@@ -6,20 +7,25 @@
 ## Install via Vundle
 
 ```vim
-Plugin "c9s/phpunit.vim"
+Plugin "Mirtos-IS/phpunit.vim"
 ```
+
+## Install via Vim-Plug
+```vim
+Plug "Mirtos-IS/phpunit.vim"
+```vim
 
 ## Configurations
 
-
+Use full path
 ```vim
 " the directory that contains your phpunit test cases.
-let g:phpunit_testroot = 'tests'
+let g:phpunit_test_root = 'tests'
 ```
 
 ```vim
-" the directory that contains source files
-let g:phpunit_srcroot = 'src'
+" the directory that contains source files. if your tests directory is inside your src, use '.
+let g:phpunit_src_root = 'src'
 ```
 
 ```vim
@@ -37,11 +43,7 @@ let g:phpunit_options = ["--stop-on-failure"]
 - `<leader>ta` - Run all test cases
 - `<leader>ts` - Switch between source & test file
 - `<leader>tf` - Run current test case class
-
-## Notice
-
-Since vim doesn't support pipe output to a buffer, this plugin only renders the content to buffer when the command completed.
-
+- `<leader>tc` - Close test file
 ## License
 
 MIT License
