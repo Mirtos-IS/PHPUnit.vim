@@ -7,7 +7,7 @@ if !exists('g:phpunit_test_root')
   let g:phpunit_test_root = 'tests'
 endif
 if !exists('g:phpunit_src_root')
-  let g:phpunit_project_root = '.'
+  let g:phpunit_src_root = 'app'
 endif
 
 if !exists('g:php_bin')
@@ -15,11 +15,11 @@ if !exists('g:php_bin')
 endif
 
 if !exists('g:phpunit_bin')
-  let g:phpunit_bin = 'phpunit'
+  let g:phpunit_bin = 'vendor/bin/phpunit'
 endif
 
 if !exists('g:phpunit_options')
-  let g:phpunit_options = ['--colors', '--stop-on-failure', '--columns=50']
+  let g:phpunit_options = ['--colors','--columns=50']
 endif
 
 " you can set there subset of tests if you do not want to run
@@ -31,12 +31,33 @@ endif
 
 let g:PHPUnit = {}
 
+fun! g:PHPUnit.getPHPUnitPath()
+    echo 2
+    let filedir = expand('%:p:r')
+    echo 1
+    let isTest = expand('%:t') =~ "Test\.php$"
+    if isTest
+        let currentdir = expand(g:phpunit_test_root)
+    else
+        let currentdir = expand(g:phpunit_src_root)
+    endif
+    let file = substitute(filedir, currentdir.'.*$', '/' . g:phpunit_bin, '')
+    echo file
+    return file
+endf
+
 fun! g:PHPUnit.buildBaseCommand()
   let cmd = []
   if g:php_bin != ""
     call add(cmd, g:php_bin)
   endif
-  call add(cmd, g:phpunit_bin)
+  if g:phpunit_bin != 'phpunit'
+      echo 0
+      call add(cmd, g:PHPUnit.getPHPUnitPath(). ' gostosa')
+  else
+      echo 1
+      call add(cmd, "phpunit ")
+  endif
   call add(cmd, join(g:phpunit_options, " "))
   return cmd
 endfun
@@ -94,9 +115,6 @@ fun! g:PHPUnit.OpenBuffer(content)
   wincmd p
 endfun
 
-
-
-
 fun! g:PHPUnit.RunAll()
   let cmd = g:PHPUnit.buildBaseCommand()
   let cmd = cmd + [expand(g:phpunit_test_root)]
@@ -127,7 +145,7 @@ fun! g:PHPUnit.SwitchFile()
     " create a directory for the file
     let dir = expand('%:p:h')
     if ! isdirectory(dir)
-      cal mkdir(dir,'p')
+      cal mkdir(dir,'p')vai ju
     endif
   endif
 endf
@@ -135,7 +153,7 @@ endf
 fun! g:PHPUnit.CloseTestFile()
     let file = g:GetRightFile(0)
     let isTest = expand('%:t') =~ "Test\.php$"
-    " check for windows with 
+    " check for windows with
     let win = bufwinnr(file)
     if win > 0 && !isTest
         execute win . "wincmd c"
@@ -149,6 +167,7 @@ endf
     "returns my test file full path if 0
     "full path reverse file (original <-> test) if 1
 fun! g:GetRightFile(test = 1)
+    echo g:phpunit_test_root
     "Allow to set full dir with ~/ or $HOME
   let test_dir = expand(g:phpunit_test_root)
   let src_dir = expand(g:phpunit_src_root)
@@ -159,10 +178,10 @@ fun! g:GetRightFile(test = 1)
 
   if isTest && a:test
     " replace phpunit_test_root with libroot
-  let file = substitute(file, test_dir, src_dir, '')
+      let file = substitute(file, test_dir, src_dir, '')
 
     " remove 'Test.' from filename
-  let file = substitute(file,'Test\.php$','.php','')
+      let file = substitute(file,'Test\.php$','.php','')
   else
     " get the file name with no .php + full path
     let file = expand('%:p:r')
